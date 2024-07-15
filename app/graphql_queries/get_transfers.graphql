@@ -1,0 +1,16 @@
+query GetTransfers($walletAddress: String!, $blockNumber: BigFloat!) {
+  transfers(
+    filter: {
+      to: { equalTo: $walletAddress },
+      blockNumber: { greaterThan: $blockNumber }
+    }
+  ) {
+    nodes {
+      id
+      from
+      to
+      blockNumber
+      amount
+    }
+  }
+}

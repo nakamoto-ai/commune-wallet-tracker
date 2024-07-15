@@ -1,0 +1,6 @@
+requests
+sqlalchemy
+aiosqlite
+greenlet
+fastapi
+uvicorn
