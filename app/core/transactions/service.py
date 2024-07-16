@@ -9,21 +9,21 @@ class TransactionService:
         self.db_query = db_query
 
     async def sync_transactions(self):
-        # TODO: Query database for a list of cold wallets.
+        cold_wallets = await self.db_query.get_all_cold_wallets()
 
         latest_block_number = await self.db_query.select_latest_block_number()
         print(f"Block Number of Last Transaction: {latest_block_number}")
 
-        # TODO: Loop the cold wallets fetched from database and fetch
-        # transfers for each.
-        graphql_transfers = self.graphql_client.fetch_transfers(
-            wallet_address="5GBqhN3b9N2fewFhLpaW1wbtNU5yffRv42YiettGpVbwgLNL",
-            block_number=str(latest_block_number))
+        for cold_wallet in cold_wallets:
+            print(f"Querying TX for {cold_wallet.ss58}")
+            graphql_transfers = self.graphql_client.fetch_transfers(
+                wallet_address=cold_wallet.ss58,
+                block_number=str(latest_block_number))
 
-        for tx in graphql_transfers:
-            db_tx = graphql_to_db_transfer(tx)
-            inserted_tx = await self.db_query.insert_transaction(db_tx)
-            print(f"Transaction inserted: {inserted_tx}")
+            for tx in graphql_transfers:
+                db_tx = graphql_to_db_transfer(tx)
+                inserted_tx = await self.db_query.insert_transaction(db_tx)
+                print(f"Transaction inserted: {inserted_tx}")
 
     async def get_transactions(self):
         users = await self.db_query.get_all_owners()
