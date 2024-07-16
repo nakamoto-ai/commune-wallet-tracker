@@ -4,7 +4,7 @@ from app.core.graphql.client import GraphQLClient
 from app.db.queries import Queries
 from app.models.api.users import UserAPIData
 from app.models.api.transfers import TransferAPIData
-from app.models.utils.conversion import graphql_to_db_transfer
+from app.models.utils.conversion import graphql_to_db_transfer, db_to_api_user
 
 
 class TransactionService:
@@ -33,21 +33,11 @@ class TransactionService:
         users = await self.db_query.get_all_owners()
 
         data: List[UserAPIData] = []
+
         for u in users:
-            transfers_db = await self.db_query.get_transfers_for_user(u.id)
-
-            transfer_api_data = [TransferAPIData(
-                id=t.id,
-                from_=t.from_,
-                to=t.to,
-                amount=t.amount,
-                blockNumber=t.blockNumber
-            ) for t in transfers_db]
-
-            user_api_data = UserAPIData(
-                id=u.id,
-                name=u.name,
-                transfers=transfer_api_data
+            user_api_data = db_to_api_user(
+                user_db=u,
+                transfers_db=await self.db_query.get_transfers_for_user(u.id)
             )
 
             data.append(user_api_data)
