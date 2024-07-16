@@ -7,7 +7,7 @@ from sqlalchemy import func
 
 from app.models.db.transfers import Transfer
 from app.models.db.users import User
-from app.models.db.wallets import HotWallet
+from app.models.db.wallets import HotWallet, ColdWallet
 
 
 class Queries:
@@ -41,3 +41,7 @@ class Queries:
         wallets = await self.get_wallets_for_user(user_id)
         wallet_addresses = [wallet.ss58 for wallet in wallets]
         return await self.get_transfers_for_wallets(wallet_addresses)
+
+    async def get_all_cold_wallets(self) -> List[ColdWallet]:
+        result = await self.db.execute(select(ColdWallet))
+        return result.scalars().all()
