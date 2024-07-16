@@ -20,8 +20,10 @@ class Queries:
         await self.db.refresh(tx)
         return tx
 
-    async def select_latest_block_number(self) -> Decimal:
-        result = await self.db.execute(select(func.max(Transfer.blockNumber)))
+    async def select_latest_block_number(self, ss58: str) -> Decimal:
+        result = await self.db.execute(
+            select(func.max(Transfer.blockNumber)).where(Transfer.to == ss58)
+        )
         largest_block_number: Union[Decimal, None] = result.scalar_one_or_none()
         return largest_block_number if largest_block_number is not None else Decimal(0)
 

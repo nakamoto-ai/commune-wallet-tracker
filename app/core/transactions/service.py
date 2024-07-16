@@ -14,10 +14,10 @@ class TransactionService:
     async def sync_transactions(self):
         cold_wallets = await self.db_query.get_all_cold_wallets()
 
-        latest_block_number = await self.db_query.select_latest_block_number()
-        print(f"Block Number of Last Transaction: {latest_block_number}")
-
         for cold_wallet in cold_wallets:
+            latest_block_number = await self.db_query.select_latest_block_number(ss58=cold_wallet.ss58)
+            print(f"Block Number of Last Transaction: {latest_block_number}")
+
             print(f"Querying TX for {cold_wallet.ss58}")
             graphql_transfers = self.graphql_client.fetch_transfers(
                 wallet_address=cold_wallet.ss58,
