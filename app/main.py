@@ -19,7 +19,7 @@ async def background_task(transaction_service: TransactionService):
     try:
         while True:
             await transaction_service.sync_transactions()
-            await asyncio.sleep(1)  # Wait for a second before running again
+            await asyncio.sleep(300)  # Wait for a second before running again
     except asyncio.CancelledError:
         print("Background task cancelled")
 
