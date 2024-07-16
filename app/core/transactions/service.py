@@ -3,7 +3,6 @@ from typing import List
 from app.core.graphql.client import GraphQLClient
 from app.db.queries import Queries
 from app.models.api.users import UserAPIData
-from app.models.api.transfers import TransferAPIData
 from app.models.utils.conversion import graphql_to_db_transfer, db_to_api_user
 
 
