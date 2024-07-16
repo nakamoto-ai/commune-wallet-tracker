@@ -1,5 +1,9 @@
+from typing import List
+
 from app.core.graphql.client import GraphQLClient
 from app.db.queries import Queries
+from app.models.api.users import UserAPIData
+from app.models.api.transfers import TransferAPIData
 from app.models.utils.conversion import graphql_to_db_transfer
 
 
@@ -25,16 +29,27 @@ class TransactionService:
                 inserted_tx = await self.db_query.insert_transaction(db_tx)
                 print(f"Transaction inserted: {inserted_tx}")
 
-    async def get_transactions(self):
+    async def get_transactions(self) -> List[UserAPIData]:
         users = await self.db_query.get_all_owners()
 
-        # TODO: Store data response in a data class.
-        data = {}
+        data: List[UserAPIData] = []
         for u in users:
-            transfers = await self.db_query.get_transfers_for_user(u.id)
-            data[u.id] = {
-                'name': u.name,
-                'transfers': transfers
-            }
+            transfers_db = await self.db_query.get_transfers_for_user(u.id)
+
+            transfer_api_data = [TransferAPIData(
+                id=t.id,
+                from_=t.from_,
+                to=t.to,
+                amount=t.amount,
+                blockNumber=t.blockNumber
+            ) for t in transfers_db]
+
+            user_api_data = UserAPIData(
+                id=u.id,
+                name=u.name,
+                transfers=transfer_api_data
+            )
+
+            data.append(user_api_data)
 
         return data
