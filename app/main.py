@@ -11,7 +11,8 @@ import uvicorn
 from app.db.connection import init_db, SessionLocal
 from app.api.routes import router as api_router
 from app.core.transactions.service import TransactionService
-from app.dependencies import get_transaction_service
+from app.db.queries import Queries
+from app.dependencies import graphql_client
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(current_dir))
@@ -21,7 +22,7 @@ async def background_task(transaction_service: TransactionService):
     try:
         while True:
             await transaction_service.sync_transactions()
-            await asyncio.sleep(300)  # Wait for a second before running again
+            await asyncio.sleep(300)  # Wait 5 minutes before running again
     except asyncio.CancelledError:
         print("Background task cancelled")
 
@@ -30,7 +31,8 @@ async def background_task(transaction_service: TransactionService):
 async def lifespan(api: FastAPI):
     await init_db()
     async with SessionLocal() as session:
-        transaction_service = get_transaction_service(session)
+        transaction_service = TransactionService(graphql_client, Queries(session))
+        api.state.transaction_service = transaction_service
         task = asyncio.create_task(background_task(transaction_service))
         yield
         task.cancel()
