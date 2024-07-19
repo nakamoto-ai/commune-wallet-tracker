@@ -1,13 +1,12 @@
 import argparse
 import asyncio
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.models.db.base import Base
+from app.db.connection import SessionLocal
 from app.models.db.wallets import HotWallet
 from app.models.db.users import User
-
-from app.db.connection import SessionLocal
 
 
 async def get_owner_id(session: AsyncSession, owner_name: str):
