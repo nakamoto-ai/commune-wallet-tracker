@@ -1,11 +1,11 @@
 from decimal import Decimal
 from typing import List
 
-from app.models.graphql.transfers import GraphQLTransfer
-from app.models.db.transfers import Transfer
-from app.models.db.users import User
 from app.models.api.transfers import TransferAPIData
 from app.models.api.users import UserAPIData
+from app.models.db.transfers import Transfer
+from app.models.db.users import User
+from app.models.graphql.transfers import GraphQLTransfer
 
 
 def graphql_to_db_transfer(graphql_transfer: GraphQLTransfer) -> Transfer:
