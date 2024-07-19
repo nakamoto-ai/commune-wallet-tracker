@@ -1,16 +1,16 @@
 import asyncio
 import os
 import sys
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from contextlib import asynccontextmanager
 import uvicorn
 
-from app.db.connection import init_db, SessionLocal
 from app.api.routes import router as api_router
 from app.core.transactions.service import TransactionService
+from app.db.connection import init_db, SessionLocal
 from app.db.queries import Queries
 from app.dependencies import graphql_client
 
