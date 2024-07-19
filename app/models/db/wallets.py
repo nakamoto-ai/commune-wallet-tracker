@@ -1,11 +1,9 @@
 
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.models.db.base import Base
 from sqlalchemy import Column, String
 
-from app.models.db.users import GUID
-from sqlalchemy.dialects.postgresql import UUID as PG_UUID
+from app.models.db.base import Base, GUID
 
 
 class HotWallet(Base):
