@@ -1,8 +1,7 @@
 import os
 
-from core.constants.graphql import GRAPHQL_GET_TRANSFERS
-
-from models.graphql.query import GraphQLQuery
+from app.core.constants.graphql import GRAPHQL_GET_TRANSFERS
+from app.models.graphql.query import GraphQLQuery
 
 
 class GraphQLQueryLoader:
