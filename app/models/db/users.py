@@ -1,11 +1,9 @@
-# app/db/users.py
 import uuid
 
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
-from app.models.db.base import Base
-from app.models.db.base import GUID
+from app.models.db.base import Base, GUID
 
 
 class User(Base):
