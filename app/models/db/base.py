@@ -1,8 +1,9 @@
-from sqlalchemy import Column, DateTime, func, String
-from sqlalchemy.ext.declarative import as_declarative, declared_attr
-from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from sqlalchemy.types import TypeDecorator
 import uuid
+
+from sqlalchemy import Column, DateTime, String, func
+from sqlalchemy.dialects.postgresql import UUID as PG_UUID
+from sqlalchemy.ext.declarative import as_declarative, declared_attr
+from sqlalchemy.types import TypeDecorator
 
 
 class GUID(TypeDecorator):
