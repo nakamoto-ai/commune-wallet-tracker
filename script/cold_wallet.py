@@ -1,13 +1,11 @@
 import argparse
 import asyncio
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.models.db.base import Base
-from app.models.db.wallets import ColdWallet
-from app.models.db.users import User
-
 from app.db.connection import SessionLocal
+from app.models.db.wallets import ColdWallet
 
 
 async def insert_cold_wallets(session: AsyncSession, wallet_addresses: list):
