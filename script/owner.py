@@ -1,11 +1,11 @@
 import argparse
 import asyncio
-import uuid
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.models.db.base import Base
-from app.models.db.users import User
-from app.db.connection import SessionLocal
+
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.db.connection import SessionLocal
+from app.models.db.users import User
 
 
 async def user_exists(session: AsyncSession, email: str) -> bool:
