@@ -21,7 +21,9 @@ sys.path.append(os.path.dirname(current_dir))
 async def background_task(transaction_service: TransactionService):
     try:
         while True:
+            print("Running background service...")
             await transaction_service.sync_transactions()
+            print("Sleeping 5 minutes...")
             await asyncio.sleep(300)  # Wait 5 minutes before running again
     except asyncio.CancelledError:
         print("Background task cancelled")
